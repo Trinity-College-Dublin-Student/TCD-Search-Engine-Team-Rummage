@@ -30,7 +30,6 @@ public class LATimesParser {
         }
 
         //ParseFile(inputFile);
-
     }
 
     private static void ParseFile(String inputFile) {
@@ -40,8 +39,12 @@ public class LATimesParser {
             FileReader reader = new FileReader(inputFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
 
-            FileWriter writer = null;
-            BufferedWriter bufferedWriter = null;
+            
+            String[] split = inputFile.split("\\\\");
+            String fileName = split[split.length-1];
+            
+            FileWriter writer = new FileWriter("Parsed/" + fileName + ".txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
             String currentLine;
 
@@ -51,13 +54,9 @@ public class LATimesParser {
                     continue;
                 } else if (currentLine.startsWith("</DOC>")) {
                     bufferedWriter.write("</DOC>");
-                    bufferedWriter.close();
 
                 } else if (currentLine.startsWith("<DOCNO>")) {
                     String Id = currentLine.split(">")[1].split("<")[0].trim();
-
-                    writer = new FileWriter("Parsed/" + Id + ".txt");
-                    bufferedWriter = new BufferedWriter(writer);
 
                     bufferedWriter.write("<DOC>");
                     bufferedWriter.newLine();
@@ -106,6 +105,8 @@ public class LATimesParser {
                 }
 
             }
+            bufferedWriter.close();
+            
         } catch (Exception ex) {
             System.out.println("ERROR: " + ex);
             System.exit(1);
