@@ -1,0 +1,6 @@
+<top>
+<num> Number: 404  
+<title> Ireland, peace talks 
+<desc> Description:  How often were the peace talks in Ireland delayed  or disrupted as a result of acts of violence?
+<narr> Narrative:  Any interruptions to the peace process not directly  attributable to acts of violence are not relevant.
+</top>
