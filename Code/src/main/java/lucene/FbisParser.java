@@ -1,18 +1,24 @@
-package CS7IS3;
+package lucene;
 
 import java.io.*;
 
-public class ParseFbis {
-    private static String filesPath = "/Users/mengxuan/Desktop/groupAssignment/docs/fbis/";
-    private static String OUTPUT = "/Users/mengxuan/Desktop/groupAssignment/reformatedDOC/fbis/";
+public class FbisParser {
+
+    private static final String filesPath = "..\\Assignment Two Dataset\\fbis";
+    private static final String OUTPUT = "A2-DOC\\";
 
     public static void main(String[] args) {
+
+        Parse();
+    }
+
+    public static void Parse() {
         File folder = new File(filesPath);
         File[] files = folder.listFiles();
 
-        for(File file : files) {
+        for (File file : files) {
             try {
-                ParseFbis.reformate(file);
+                FbisParser.reformate(file);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -36,31 +42,31 @@ public class ParseFbis {
         String state = "FINISH";
         while ((lineTxt = br.readLine()) != null) {
             lineTxt = lineTxt.trim();
-            if(lineTxt.matches("<DOC>")) {
+            if (lineTxt.matches("<DOC>")) {
                 p.println(lineTxt);
-            } else if(lineTxt.matches("</DOC>")) {
+            } else if (lineTxt.matches("</DOC>")) {
                 p.println(lineTxt);
                 p.println();
-            }else if(lineTxt.matches("<H3> <TI>.*</TI></H3>$")) {
+            } else if (lineTxt.matches("<H3> <TI>.*</TI></H3>$")) {
                 p.println("<TITLE>");
-                String title = lineTxt.replace("<H3> <TI>","").replace("</TI></H3>", "");
+                String title = lineTxt.replace("<H3> <TI>", "").replace("</TI></H3>", "");
                 p.println(title.trim());
                 p.println("</TITLE>");
-            } else if(lineTxt.matches("<H3> <TI>.*")) {
+            } else if (lineTxt.matches("<H3> <TI>.*")) {
                 p.println("<TITLE>");
-                String title = lineTxt.replace("<H3> <TI>","");
+                String title = lineTxt.replace("<H3> <TI>", "");
                 p.println(title.trim());
-            } else if(lineTxt.matches(".*</TI></H3>$")) {
+            } else if (lineTxt.matches(".*</TI></H3>$")) {
                 String title = lineTxt.replace("</TI></H3>", "");
                 p.println(title.trim());
                 p.println("</TITLE>");
-            } else if(lineTxt.matches("<TEXT>")) {
+            } else if (lineTxt.matches("<TEXT>")) {
                 state = "TEXT";
                 p.println(lineTxt);
-            } else if(lineTxt.matches("</TEXT>")) {
+            } else if (lineTxt.matches("</TEXT>")) {
                 p.println(lineTxt);
                 state = "FINISH";
-            } else if(state.equals("TEXT")){
+            } else if (state.equals("TEXT")) {
                 p.println(lineTxt);
             } else;
         }

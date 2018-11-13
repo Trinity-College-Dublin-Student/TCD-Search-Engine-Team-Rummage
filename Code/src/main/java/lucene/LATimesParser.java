@@ -16,20 +16,24 @@ public class LATimesParser {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        
+        Parse();
+        //ParseFile(inputFile);
+    }
+    
+    public static void Parse(){
         new File("Parsed").mkdir();
 
-        File folder = new File("D:\\Rummage\\Assignment Two\\latimes");
+        File folder = new File("..\\Assignment Two Dataset\\latimes");
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println(i);
+                //System.out.println(i);
                 ParseFile(listOfFiles[i].getAbsolutePath());
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
-
-        //ParseFile(inputFile);
     }
 
     private static void ParseFile(String inputFile) {
@@ -43,7 +47,7 @@ public class LATimesParser {
             String[] split = inputFile.split("\\\\");
             String fileName = split[split.length-1];
             
-            FileWriter writer = new FileWriter("Parsed/" + fileName + ".txt");
+            FileWriter writer = new FileWriter("A2-DOC/" + fileName + ".txt");
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
             String currentLine;
