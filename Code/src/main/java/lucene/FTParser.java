@@ -52,7 +52,7 @@ public class FTParser {
     }
 
     public static void Parse() {
-        ParserFT p = new ParserFT("..\\Assignment Two Dataset\\ft\\");
+        ParserFT p = new ParserFT("../Assignment Two Dataset/ft/");
         p.createFileList();
         BufferedReader br = null;
 
@@ -61,7 +61,7 @@ public class FTParser {
         for (String str : p.files) {
             try {
                 StringBuilder sb = new StringBuilder();
-                PrintWriter writer = new PrintWriter("A2-DOC\\" + "DOC_" + k, "UTF-8");
+                PrintWriter writer = new PrintWriter("A2-DOC/" + "DOC_" + k, "UTF-8");
 //				System.out.println(str);
 
                 String line = null;

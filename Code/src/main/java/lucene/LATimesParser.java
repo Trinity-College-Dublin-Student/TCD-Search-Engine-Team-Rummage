@@ -24,7 +24,7 @@ public class LATimesParser {
     public static void Parse(){
         new File("Parsed").mkdir();
 
-        File folder = new File("..\\Assignment Two Dataset\\latimes");
+        File folder = new File("../Assignment Two Dataset/latimes");
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
@@ -44,7 +44,7 @@ public class LATimesParser {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             
-            String[] split = inputFile.split("\\\\");
+            String[] split = inputFile.split("/");
             String fileName = split[split.length-1];
             
             FileWriter writer = new FileWriter("A2-DOC/" + fileName + ".txt");

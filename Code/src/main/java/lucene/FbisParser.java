@@ -4,8 +4,8 @@ import java.io.*;
 
 public class FbisParser {
 
-    private static final String filesPath = "..\\Assignment Two Dataset\\fbis";
-    private static final String OUTPUT = "A2-DOC\\";
+    private static final String filesPath = "../Assignment Two Dataset/fbis";
+    private static final String OUTPUT = "A2-DOC/";
 
     public static void main(String[] args) {
 
