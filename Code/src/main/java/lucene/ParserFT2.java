@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+
 import org.apache.commons.lang.StringUtils;
 
 class ParserFT {
@@ -44,14 +46,11 @@ class ParserFT {
 	}
 }
 
-public class FTParser {
-	  public static void main(String[] args) {
-		  Parse();
-	    }
+public class ParserFT2 {
+	public static void main(String [] args) {
+		Parse();
+	}
 	public static void Parse(){
-		
-		
-		
 		ParserFT p = new ParserFT("../Assignment Two Dataset/ft/");
 		p.createFileList();
 		BufferedReader br = null;
@@ -65,7 +64,7 @@ public class FTParser {
 				String fNm = arr[len - 1];
 				StringBuilder sb = new StringBuilder();
 				System.out.println(fNm);
-				PrintWriter writer = new PrintWriter("A2-DOC/" + fNm, "UTF-8");
+				
 //				System.out.println(str);
 
 				String line = null;
@@ -76,10 +75,13 @@ public class FTParser {
 				}
 				String[] content = sb.toString().split("</DOC>");
 //				System.out.println(content.length);
-				BufferedWriter bw = new BufferedWriter(writer);
+				
 				for (int i = 0; i < content.length; i++) {
-					bw.write("<DOC>");
 					String docno = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>");
+					PrintWriter writer = new PrintWriter("A2-DOC/" + fNm, "UTF-8");
+					BufferedWriter bw = new BufferedWriter(writer);
+					bw.write("<DOC>");
+					
 					//System.out.println(StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>"));
 					String topic = "";
 					try {
@@ -97,10 +99,10 @@ public class FTParser {
 					bw.write("<TITLE>" + topic + "</TITLE>");
 					bw.write("<TEXT>" + text + "</TEXT>");
 					bw.write("</DOC>");
+					bw.flush();
+					bw.close();
 
 				}
-				bw.flush();
-				bw.close();
 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
