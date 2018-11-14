@@ -57,8 +57,14 @@ class ParserFT {
 	}
 }
 
-public class Parser {
-	public static void main(String[] args) {
+public class FTParser {
+	  public static void main(String[] args) {
+		  Parse();
+	    }
+	public static void Parse(){
+		
+		
+		
 		ParserFT p = new ParserFT("../Assignment Two Dataset/ft/");
 		p.createFileList();
 		BufferedReader br = null;
