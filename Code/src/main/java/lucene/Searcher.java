@@ -78,7 +78,7 @@ public class Searcher {
         int repeat = 0;
         boolean raw = false;
         String queryString = null;
-        int hitsPerPage = 10;
+        int hitsPerPage = 1000;
 
         for (int i = 0; i < args.length; i++) {
             if ("-index".equals(args[i])) {
@@ -304,7 +304,7 @@ public class Searcher {
         while ((currentLine = bufferedReader.readLine()) != null) {
             currentLine = currentLine.replace("?", "");
 
-            if (currentLine.equals("<top>") || currentLine.equals("</top>")) {
+            if (currentLine.equals("<top>") || currentLine.equals("") || currentLine.equals("</top>")) {
                 continue;
             } else if (currentLine.startsWith("<num>")) {
                 int Id = Integer.parseInt(currentLine.split(":")[1].trim());
@@ -335,19 +335,24 @@ public class Searcher {
                 currentQuery.setCombined(Narr);
             } else {
                 SearchQuery currentQuery = queryList.get(queryList.size() - 1);
+
+                //remove non alphanumeric chars     
+                currentLine = currentLine.replaceAll("[^A-Za-z0-9 ]", "");
+                currentLine = currentLine.trim().replaceAll(" +", " ");
+                System.out.println("State= " + State + "\ncurrent=" + currentLine);
                 switch (State) {
                     case 'T':
-                        String Title = currentLine.split(">")[1];
+                        String Title = currentLine;
                         currentQuery.setTitle(Title);
                         currentQuery.setCombined(Title);
                         break;
                     case 'D':
-                        String Desc = currentLine.split(">")[1];
+                        String Desc = currentLine;
                         currentQuery.setDescription(Desc);
                         currentQuery.setCombined(Desc);
                         break;
                     case 'N':
-                        String Narr = currentLine.split(">")[1];
+                        String Narr = currentLine;
                         currentQuery.setNarrative(Narr);
                         currentQuery.setCombined(Narr);
                         break;
