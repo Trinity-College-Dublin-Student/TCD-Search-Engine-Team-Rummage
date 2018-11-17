@@ -38,15 +38,15 @@ class ParserFR {
 }
 
 public class FRParser {
-	static Logger log = Logger.getLogger(Indexer.class.getName());
+	//static Logger log = Logger.getLogger(Indexer.class.getName());
 
 	public static void main(String[] args) {
 		Parse();
 	}
 
 	public static void Parse() {
-		DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
-		ParserFR p = new ParserFR("/home/abhishek/Desktop/fr94_ParsedDoc/");
+		//DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
+		ParserFR p = new ParserFR("../Assignment Two Dataset/fr94_ParsedDoc/");
 		p.createFileList();
 		BufferedReader br = null;
 
@@ -60,7 +60,7 @@ public class FRParser {
 				StringBuilder sb = new StringBuilder();
 				System.out.println(fNm);
 				// log.info("Current File Topic -> "+ topic);
-				PrintWriter writer = new PrintWriter("/home/abhishek/Desktop/frparse/" + fNm, "UTF-8");
+				PrintWriter writer = new PrintWriter("A2-DOC/" + fNm, "UTF-8");
 //				System.out.println(str);
 
 				String line = null;
@@ -79,7 +79,7 @@ public class FRParser {
 					// "</DOCNO>"));
 					// text = text.replaceAll("\\<.*?\\>", "");
 					String topic = "";
-					log.info("Processed " + fNm);
+					//log.info("Processed " + fNm);
 					
 					String text = StringUtils.substringAfter(content[i], "</DOCNO>");
 //					log.info("Data " + text);
