@@ -51,28 +51,52 @@ public class Indexer {
         for (File file : dirList) {
             count++;
             try {
-                System.out.println("Count" + count);
-                System.out.println("Current File -> " + file.getCanonicalPath());
-                //System.out.println("");
+                System.out.println("Count"+ count);
+                System.out.println(("Current File -> "+ file.getCanonicalPath()));
+                System.out.println("");
                 BufferedReader br = new BufferedReader(new FileReader(file.getCanonicalFile()));
                 String line = null;
                 StringBuilder sb = new StringBuilder();
-                while ((line = br.readLine()) != null) {
+                while((line = br.readLine()) !=null) {
                     sb.append(line);
                 }
                 String[] content = sb.toString().split("</DOC>");
-                for (int i = 0; i < content.length; i++) {
-                    String topic = StringUtils.substringBetween(content[i], "<TITLE>", "</TITLE>").trim(); // Topic
+                for (int i= 0; i< content.length; i++) {
+                    
+                    String topic = null;
+                    String DOCNO = null;
+                    
                     String text = StringUtils.substringBetween(content[i], "<TEXT>", "</TEXT>").trim(); // Author
-//					System.out.println();
+                    
+                    // Avoids null pointer exception.
+                    if(content[i].contains("<TITLE>")) {
+                        topic = StringUtils.substringBetween(content[i], "<TITLE>", "</TITLE>").trim(); // Topic
+                    }
+                    // Avoids null pointer exception.
+                    if(content[i].contains("<DOCNO>")) {
+                        DOCNO = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>").trim(); // DocNo
+                    }
+                    
+                    //System.out.println();
                     Document doc = new Document();
-//					log.info("Current File Topic -> "+ topic);
+                    //  log.info("Current File Topic -> "+ topic);
+                    
                     Field pathField = new StringField("path", file.toString(), Field.Store.YES);
                     doc.add(pathField);
-                    doc.add(new TextField("Topic", topic, Field.Store.YES));
-                    doc.add(new TextField("Text", text, Field.Store.YES));
+                    
+                    // fr95 contains this field other news columns don't
+                    if(DOCNO != null) {
+                        System.out.println(DOCNO);
+                        doc.add(new TextField("DOCNO", DOCNO, Field.Store.YES));
+                        doc.add(new TextField("Text", text, Field.Store.YES));
+                    } // for others
+                    else {
+                        doc.add(new TextField("Topic", topic, Field.Store.YES));
+                        doc.add(new TextField("Text", text, Field.Store.YES));
+                    }
+                    
                     iwriter_std.addDocument(doc);
-                    System.out.println("Indexed :: " + topic);
+//                  System.out.println("Indexed :: " + topic);
                 }
                 br.close();
             } catch (FileNotFoundException e) {
