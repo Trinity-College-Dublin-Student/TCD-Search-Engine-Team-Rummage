@@ -68,36 +68,37 @@ public class Indexer {
                     String topic = "";
                     String DOCNO = "";
                     
-                    String text = StringUtils.substringBetween(content[i], "<TEXT>", "</TEXT>").trim(); // Author
-                    
+                    //String text = StringUtils.substringBetween(content[i], "<TEXT>", "</TEXT>").trim(); // Author
+                    String text = content[i].trim();
                     // Avoids null pointer exception.
-                    if(content[i].contains("<TITLE>")) {
-                        topic = StringUtils.substringBetween(content[i], "<TITLE>", "</TITLE>").trim(); // Topic
-                    }
-                    // Avoids null pointer exception.
-                    if(content[i].contains("<DOCNO>")) {
-                        DOCNO = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>").trim(); // DocNo
-                    }
+//                    if(content[i].contains("<TITLE>")) {
+//                        topic = StringUtils.substringBetween(content[i], "<TITLE>", "</TITLE>").trim(); // Topic
+//                    }
+//                    // Avoids null pointer exception.
+//                    if(content[i].contains("<DOCNO>")) {
+//                        DOCNO = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>").trim(); // DocNo
+//                    }
                     
                     //System.out.println();
                     Document doc = new Document(); 
-                    log.info("Current File -> "+ topic);
-                    log.info("Current File Topic -> "+ topic);
+                   
                     
-                    
+                    DOCNO = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>").trim(); // DocNo
                     Field pathField = new StringField("path", file.toString(), Field.Store.YES);
-                    doc.add(pathField);
+                    log.info("Current File -> "+ pathField);
+                    text = text.replaceAll("\\<.*?\\>", "");
+//                    doc.add(pathField);
                     
                     // fr95 contains this field other news columns don't
-                    if(DOCNO != null) {
+//                    if(DOCNO != null) {
                         System.out.println(DOCNO);
                         doc.add(new TextField("DOCNO", DOCNO, Field.Store.YES));
                         doc.add(new TextField("Text", text, Field.Store.YES));
-                    } // for others
-                    else {
-                        doc.add(new TextField("Topic", topic, Field.Store.YES));
-                        doc.add(new TextField("Text", text, Field.Store.YES));
-                    }
+//                    } // for others
+//                    else {
+//                        doc.add(new TextField("Topic", topic, Field.Store.YES));
+//                        doc.add(new TextField("Text", text, Field.Store.YES));
+//                    }
                     
                     iwriter_std.addDocument(doc);
 //                  System.out.println("Indexed :: " + topic);

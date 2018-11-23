@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
@@ -223,9 +224,8 @@ public class Searcher {
                 String path = doc.get("DOCNO");
                 float score = hits[i].score;
                 if (path != null) {
-
+                	
                     if (queriesFile) {
-
                         bufferedWriter.write(queryCounter + " 0 " + getFileName(path) + " " + (int) ((hits[i].score / hits[0].score) * 5) + " " + hits[i].score + " STANDARD");
                         bufferedWriter.newLine();
                     }

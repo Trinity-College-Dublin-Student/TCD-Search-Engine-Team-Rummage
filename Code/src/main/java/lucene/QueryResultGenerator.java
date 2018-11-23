@@ -75,26 +75,12 @@ public class QueryResultGenerator {
 				queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").trim(); 
 				String qryNo = StringUtils.substringBetween(content[i],"Number:", "<title>").trim();
 				Query query_std = parser_std.parse(queryString);
-				
-				// Vectorquery
-
-				
-				//BM25
 				ScoreDoc[] hits_bm_std = isbstd.search(query_std, 1000).scoreDocs;
-				
-
 				System.out.println();
 				System.out.println(queryString);
 				for (int k = 0; k < hits_bm_std.length; k++) {
-					// 413 0 FT944-17457 0
 					Document hitDoc = isbstd.doc(hits_bm_std[k].doc);
-//					System.out.println(i+ " "+k+" "+ hitDoc.get("topic_no") + " " +"0 "+ hits_bm_std[k].score+ " STANDARD" +'\n');
-					// writer_bm_std.write(i+ " "+k+" "+ hitDoc.get("topic_no") + " " +"0 "+ hits_bm_std[k].score+ " STANDARD" +'\n');
-					System.out.println("docno "+hitDoc.get("DOCNO"));
-					if(hitDoc.get("DOCNO").length()>2 ){
-						writer_bm_std.write(qryNo+" "+ "0 "+hitDoc.get("DOCNO")+" 0 " +hits_bm_std[k].score+ " STANDARD" +"\n");
-					}
-					
+					writer_bm_std.write(qryNo+" "+ "0 "+hitDoc.get("DOCNO")+" 0 " +hits_bm_std[k].score+ " STANDARD" +"\n");
 				}
 			}
 			br.close();
