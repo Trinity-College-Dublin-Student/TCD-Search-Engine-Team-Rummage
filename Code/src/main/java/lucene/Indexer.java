@@ -21,6 +21,8 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+
 import org.apache.log4j.xml.DOMConfigurator;
 
 public class Indexer {
@@ -29,10 +31,10 @@ public class Indexer {
 
     private static String INDEX_DIRECTORY_STD = "BM25/";
     private static String BASE_PATH = "A2-DOC/";
-
+    static Logger log = Logger.getLogger(Indexer.class.getName());
     public static void main(String[] args) throws IOException {
         // Analyzer that is used to process TextField
-        //DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
+        DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
         Analyzer analyzer_standard = new StandardAnalyzer();
 
         Directory directory_std = FSDirectory.open(Paths.get(INDEX_DIRECTORY_STD));
@@ -63,8 +65,8 @@ public class Indexer {
                 String[] content = sb.toString().split("</DOC>");
                 for (int i= 0; i< content.length; i++) {
                     
-                    String topic = null;
-                    String DOCNO = null;
+                    String topic = "";
+                    String DOCNO = "";
                     
                     String text = StringUtils.substringBetween(content[i], "<TEXT>", "</TEXT>").trim(); // Author
                     
@@ -78,8 +80,10 @@ public class Indexer {
                     }
                     
                     //System.out.println();
-                    Document doc = new Document();
-                    //  log.info("Current File Topic -> "+ topic);
+                    Document doc = new Document(); 
+                    log.info("Current File -> "+ topic);
+                    log.info("Current File Topic -> "+ topic);
+                    
                     
                     Field pathField = new StringField("path", file.toString(), Field.Store.YES);
                     doc.add(pathField);

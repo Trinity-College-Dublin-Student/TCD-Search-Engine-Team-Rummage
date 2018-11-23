@@ -28,7 +28,17 @@ class ParserFR {
 		File[] dirList = currentDir.listFiles();
 		for (File file : dirList) {
 			try {
-				files.add(file.getCanonicalPath());
+				if (file.isDirectory()) {
+					dir.add(file.getCanonicalPath());
+					// files.add(file.getCanonicalPath());
+					File curDir = new File(file.getCanonicalPath());
+					File[] curFiles = curDir.listFiles();
+					ArrayList<String> tempList = new ArrayList<String>();
+					for (File str : curFiles) {
+						tempList.add(str.getCanonicalPath());
+					}
+					files.addAll(tempList);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -46,7 +56,7 @@ public class FRParser {
 
 	public static void Parse() {
 		//DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
-		ParserFR p = new ParserFR("../Assignment Two Dataset/fr94_ParsedDoc/");
+		ParserFR p = new ParserFR("../Assignment Two Dataset/fr94/");
 		p.createFileList();
 		BufferedReader br = null;
 
@@ -73,7 +83,7 @@ public class FRParser {
 //				System.out.println(content.length);
 				BufferedWriter bw = new BufferedWriter(writer);
 				for (int i = 0; i < content.length; i++) {
-					bw.write("<DOC>");
+					bw.write("<DOC>");//
 					String docno = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>");
 					// System.out.println(StringUtils.substringBetween(content[i], "<DOCNO>",
 					// "</DOCNO>"));
@@ -84,7 +94,7 @@ public class FRParser {
 					String text = StringUtils.substringAfter(content[i], "</DOCNO>");
 //					log.info("Data " + text);
 					bw.write("<DOCNO>" + docno + "</DOCNO>");
-//					bw.write("<TITLE>" + text.replaceAll("\\<.*?\\>", "") + "</TITLE>");
+					bw.write("<TITLE>" + text.replaceAll("\\<.*?\\>", "") + "</TITLE>");
 					bw.write("<TEXT>" + text.replaceAll("\\<.*?\\>", "").replaceAll("AGENCY:", "").replaceAll("SUMMARY:", "").replaceAll("ACTION:", "") + "</TEXT>");
 					bw.write("</DOC>");
 

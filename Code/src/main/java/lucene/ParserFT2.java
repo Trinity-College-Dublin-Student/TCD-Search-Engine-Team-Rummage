@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 
-class ParserFT {
+class ParserFT3 {
 	String baseDir = "";
 	ArrayList<String> files = new ArrayList<String>();
 
-	ParserFT(String path) {
+	ParserFT3(String path) {
 		baseDir = path;
 	}
 
@@ -51,7 +51,7 @@ public class ParserFT2 {
 		Parse();
 	}
 	public static void Parse(){
-		ParserFT p = new ParserFT("../Assignment Two Dataset/ft/");
+		ParserFT3 p = new ParserFT3("../Assignment Two Dataset/ft/");
 		p.createFileList();
 		BufferedReader br = null;
 

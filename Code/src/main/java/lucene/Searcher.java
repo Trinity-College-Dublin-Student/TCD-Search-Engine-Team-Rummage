@@ -220,7 +220,7 @@ public class Searcher {
                 }
 
                 Document doc = searcher.doc(hits[i].doc);
-                String path = doc.get("path");
+                String path = doc.get("DOCNO");
                 float score = hits[i].score;
                 if (path != null) {
 

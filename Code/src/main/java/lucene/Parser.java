@@ -21,7 +21,8 @@ public class Parser {
          System.out.println("FT complete..");
         FbisParser.Parse();
          System.out.println("FBis complete..");
-         
+         FRParser.Parse();
+         System.out.println("FRis complete..");
         System.out.println("Parsing Complete!");
         
     }
