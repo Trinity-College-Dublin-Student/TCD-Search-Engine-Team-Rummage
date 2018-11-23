@@ -47,6 +47,11 @@ public class FbisParser {
             } else if (lineTxt.matches("</DOC>")) {
                 p.println(lineTxt);
                 p.println();
+            } else if(lineTxt.matches("<DOCNO>.*</DOCNO>$")) {
+                p.println("<DOCNO>");
+                String ID = lineTxt.replace("<DOCNO>", "").replace("</DOCNO>", "");
+                p.println(ID.trim());
+                p.println("</DOCNO>");
             } else if (lineTxt.matches("<H3> <TI>.*</TI></H3>$")) {
                 p.println("<TITLE>");
                 String title = lineTxt.replace("<H3> <TI>", "").replace("</TI></H3>", "");
