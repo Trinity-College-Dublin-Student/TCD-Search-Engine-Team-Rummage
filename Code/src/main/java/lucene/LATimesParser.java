@@ -5,115 +5,98 @@
  */
 package lucene;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 
 public class LATimesParser {
+    private static final String filesPath = "../Assignment Two Dataset/latimes";
+    private static final String OUTPUT = "A2-DOC/";
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
 
-        
         Parse();
         //ParseFile(inputFile);
     }
     
     public static void Parse(){
-        new File("Parsed").mkdir();
+        File folder = new File(filesPath);
+        File[] files = folder.listFiles();
 
-        File folder = new File("../Assignment Two Dataset/latimes");
-        File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                //System.out.println(i);
-                ParseFile(listOfFiles[i].getAbsolutePath());
-            } else if (listOfFiles[i].isDirectory()) {
-                System.out.println("Directory " + listOfFiles[i].getName());
+        for (File file : files) {
+            try {
+                LATimesParser.reformate(file);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
         }
     }
 
-    private static void ParseFile(String inputFile) {
+    public static void reformate(File file) throws IOException {
         char State = 'I';
 
-        try {
-            FileReader reader = new FileReader(inputFile);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+        //open input file;
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "utf-8");
+        BufferedReader bufferedReader = new BufferedReader(isr);
 
-            
-            String[] split = inputFile.split("/");
-            String fileName = split[split.length-1];
-            
-            FileWriter writer = new FileWriter("A2-DOC/" + fileName + ".txt");
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-
-            String currentLine;
-
-            while ((currentLine = bufferedReader.readLine()) != null) {
-                //System.out.println(currentLine);
-                if (currentLine.equals("<P>") || currentLine.equals("</P>")) {
-                    continue;
-                } else if (currentLine.startsWith("</DOC>")) {
-                    bufferedWriter.write("</DOC>");
-
-                } else if (currentLine.startsWith("<DOCNO>")) {
-                    String Id = currentLine.split(">")[1].split("<")[0].trim();
-
-                    bufferedWriter.write("<DOC>");
-                    bufferedWriter.newLine();
-
-                } else if (currentLine.equals("<HEADLINE>")) {
-                    bufferedWriter.write("<TITLE>");
-                    bufferedWriter.newLine();
-                    State = 'T';
-                } else if (currentLine.equals("</HEADLINE>")) {
-                    bufferedWriter.write("</TITLE>");
-                    bufferedWriter.newLine();
-                    State = 'I';
-                } else if (currentLine.equals("<TEXT>")) {
-                    bufferedWriter.write("<TEXT>");
-                    bufferedWriter.newLine();
-                    State = 'W';
-
-                } else if (currentLine.equals("</TEXT>")) {
-                    bufferedWriter.write("</TEXT>");
-                    bufferedWriter.newLine();
-                    State = 'I';
-                } else if (currentLine.equals("<SUBJECT>")) {
-                    bufferedWriter.write("<SUBJECT>");
-                    bufferedWriter.newLine();
-                    State = 'S';
-
-                } else if (currentLine.equals("</SUBJECT>")) {
-                    bufferedWriter.write("</SUBJECT>");
-                    bufferedWriter.newLine();
-                    State = 'I';
-                } else {
-                    switch (State) {
-                        case 'T':
-                            bufferedWriter.write(currentLine);
-                            bufferedWriter.newLine();
-                            break;
-                        case 'W':
-                            bufferedWriter.write(currentLine);
-                            bufferedWriter.newLine();
-                            break;
-                        case 'S':
-                            bufferedWriter.write(currentLine);
-                            bufferedWriter.newLine();
-                            break;
-                    }
-                }
-
-            }
-            bufferedWriter.close();
-            
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex);
-            System.exit(1);
+        //create output file;
+        File outputFile = new File(OUTPUT + file.getName());
+        if (!outputFile.exists()) {
+            outputFile.getParentFile().mkdirs();
         }
+        FileWriter fw = new FileWriter(outputFile, false);
+        PrintWriter p = new PrintWriter(fw);
+
+        String currentLine;
+
+        while ((currentLine = bufferedReader.readLine()) != null) {
+            //System.out.println(currentLine);
+            if (currentLine.equals("<P>") || currentLine.equals("</P>")) {
+                continue;
+            } else if (currentLine.startsWith("</DOC>")) {
+                p.println("</DOC>");
+
+            } else if (currentLine.startsWith("<DOCNO>")) {
+                p.println("<DOC>");
+                String Id = currentLine.split(">")[1].split("<")[0].trim();
+                p.println("<DOCNO>");
+                p.println(Id.trim());
+                p.println("</DOCNO>");
+
+            } else if (currentLine.equals("<HEADLINE>")) {
+                p.println("<TITLE>");
+                State = 'T';
+            } else if (currentLine.equals("</HEADLINE>")) {
+                p.println("</TITLE>");
+                State = 'I';
+            } else if (currentLine.equals("<TEXT>")) {
+                p.println("<TEXT>");
+                State = 'W';
+            } else if (currentLine.equals("</TEXT>")) {
+                p.println("</TEXT>");
+                State = 'I';
+            } else if (currentLine.equals("<SUBJECT>")) {
+                p.println("<SUBJECT>");
+                State = 'S';
+            } else if (currentLine.equals("</SUBJECT>")) {
+                p.println("</SUBJECT>");
+                State = 'I';
+            } else {
+                switch (State) {
+                    case 'T':
+                        p.println(currentLine);
+
+                        break;
+                    case 'W':
+                        p.println(currentLine);
+
+                        break;
+                    case 'S':
+                        p.println(currentLine);
+
+                        break;
+                }
+            }
+        }
+        bufferedReader.close();
+        p.close();
     }
 }
