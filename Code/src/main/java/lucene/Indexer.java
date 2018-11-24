@@ -42,7 +42,7 @@ public class Indexer {
 		IndexWriterConfig config_standard = new IndexWriterConfig(analyzer_standard);
 
 		config_standard.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-		config_standard.setSimilarity(new BM25Similarity(1.5f, 0.90f));
+		config_standard.setSimilarity(new BM25Similarity(0.8f, 0.75f));
 
 		IndexWriter iwriter_std = new IndexWriter(directory_std, config_standard);
 

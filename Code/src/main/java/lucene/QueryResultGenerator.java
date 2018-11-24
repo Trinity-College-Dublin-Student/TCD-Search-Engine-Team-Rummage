@@ -22,12 +22,13 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 public class QueryResultGenerator {
     public static void main(String[] args) {
-        Analyzer analyzer_standard = new EnglishAnalyzer();
+        Analyzer analyzer = new EnglishAnalyzer();
 
         String indexStdBm = "BM25/";
         // Open the folder that contains our search index
@@ -44,15 +45,16 @@ public class QueryResultGenerator {
 
 
             IndexSearcher isbstd = new IndexSearcher(irbstd);
+            isbstd.setSimilarity(new BM25Similarity(0.8f, 0.75f));
             // Create the query parser. The default search field is "content", but
             // we can use this to search across any field
 
-//			MultiFieldQueryParser qry_std = new MultiFieldQueryParser(new String[] {"filename", "Topic"}, analyzer_standard);
+//			MultiFieldQueryParser qry_std = new MultiFieldQueryParser(new String[] {"filename", "Topic"}, analyzer);
 
 
-            QueryParser parser_std = new QueryParser("Text", analyzer_standard);
+            QueryParser parser_std = new QueryParser("Text", analyzer);
 
-            BufferedReader br = new BufferedReader(new FileReader("/home/abhishek/Desktop/TCD/IR/Search-Engine-Team-rummage-/topics.401-450"));
+            BufferedReader br = new BufferedReader(new FileReader("../topics.401-450"));
             String line = null;
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {
