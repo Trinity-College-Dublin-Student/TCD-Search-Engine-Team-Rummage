@@ -61,6 +61,7 @@ public class Indexer {
 				StringBuilder sb = new StringBuilder();
 				while ((line = br.readLine()) != null) {
 					sb.append(line);
+					sb.append(" ");
 				}
 				String[] content = sb.toString().split("</DOC>");
 				for (int i = 0; i < content.length; i++) {
