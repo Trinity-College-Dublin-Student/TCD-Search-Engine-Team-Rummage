@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -26,8 +27,7 @@ import org.apache.lucene.store.FSDirectory;
 
 public class QueryResultGenerator {
 	public static void main(String[] args) {
-		Analyzer analyzer_standard = new StandardAnalyzer();
-		String indexLocation = "BM25/";
+		Analyzer analyzer_standard = new EnglishAnalyzer();
 		
 		String indexStdBm = "BM25/";
 		// Open the folder that contains our search index
@@ -72,7 +72,7 @@ public class QueryResultGenerator {
 				content[i] = content[i].replace("/", "");
 				queryString =  StringUtils.substringBetween(content[i],"<title>", "<desc>").trim();
 				queryString = queryString+ " "+ StringUtils.substringBetween(content[i],"Description:", "<narr>").trim();
-				queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").trim(); 
+				//queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").trim(); 
 				String qryNo = StringUtils.substringBetween(content[i],"Number:", "<title>").trim();
 				Query query_std = parser_std.parse(queryString);
 				ScoreDoc[] hits_bm_std = isbstd.search(query_std, 1000).scoreDocs;
