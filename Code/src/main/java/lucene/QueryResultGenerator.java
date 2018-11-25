@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
@@ -73,8 +75,9 @@ public class QueryResultGenerator {
                 System.out.println(scrambledWord);
                 queryString = queryString+ " "+ queryString + " "+qryStr[0] +" "+ StringUtils.substringBetween(content[i], "Description:", "<narr>")+ " " + scrambledWord.trim();
                 queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").toLowerCase().
-                		replace("document", "").replace("documents","").replace("relevant", "").replace("discuss","").replace("provide", "").replace("mention","").
-                		replace("describing","").replace("find","").replace("information",""). replace("relevant","").trim();
+                        replace("document", "").replace("documents","").replace("relevant", "").replace("discuss","").replace("provide", "").replace("mention","").
+                        replace("describing","").replace("find","").replace("information",""). replace("relevant","").trim();
+                //queryString = QueryResultGenerator.replace(queryString);
                 String qryNo = StringUtils.substringBetween(content[i], "Number:", "<title>").trim();
                 Query query_std = parser_std.parse(queryString);
                 ScoreDoc[] hits_bm_std = isbstd.search(query_std, 1000).scoreDocs;
@@ -94,7 +97,41 @@ public class QueryResultGenerator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
+
+    private static String replace(String s) {
+        for(String word : myStopWords) {
+            s = s.replace(" " + word + " ", "");
+        }
+        //s.replaceAll("\\s*", " ");
+        s = s.trim();
+        return s;
+    }
+
+    // My stopword list
+    static List<String> myStopWords = Arrays.asList(
+            "a", "an", "and", "any", "are", "all", "as", "am", "at", "about","another", "above", "after", "along", "amid", "among", "anyone", "anyplace", "anything", "anytime", "anywhere",
+            "be", "but", "by", "being", "been", "both",
+            "can", "cannot", "could",
+            "different", "document", "documents", "discuss", "describing", "Do",
+            "enough", "every", "either", "each", "even", "especially", "everybody", "everyday", "everyone", "everyplace", "everything", "everywhere",
+            "for", "from", "find",
+            "get", "gets", "got", "gotten", "getting",
+            "have", "had", "has", "having", "his", "her", "how", "he", "him",
+            "if", "in", "into", "is", "it", "its", "I", "information",
+            "just",
+            "like", "less", "least",
+            "minus", "may", "might", "must", "my", "mere", "merely", "more", "most", "me", "mine", "much", "mention",
+            "no", "not", "near", "need", "neither", "namely",
+            "of", "on", "or", "off", "our", "onto", "only", "out", "over", "ought",
+            "past", "per", "plus", "pretty", "provide",
+            "quite",
+            "right", "rather", "relevant",
+            "so", "such", "since", "shall", "should", "seemed", "seems", "seem", "seeming", "some", "sheer", "somewhat", "sufficiently", "same", "she",
+            "that", "the", "their", "then", "there", "these","those", "they", "them", "this", "to", "till", "too", "theirs",
+            "until", "under", "up", "us",
+            "via", "vs",
+            "we", "was", "were", "will", "with", "would", "when", "why", "where", "what", "who", "whom", "which" ,"whether", "whose", "whatever", "whenever", "whereever", "whichever", "whoever", "whomever",
+            "you", "your", "yours");
 }
     
