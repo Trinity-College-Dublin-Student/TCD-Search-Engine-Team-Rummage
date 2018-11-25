@@ -96,6 +96,5 @@ public class Indexer {
 		// Commit changes and close everything
 		iwriter_std.close();
 		directory_std.close();
-
 	}
 }

@@ -27,7 +27,8 @@ public class QueryResultGenerator {
     public static void main(String[] args) {
         Analyzer analyzer = new EnglishAnalyzer();
 
-        String indexStdBm = "BM25/";
+        //String indexStdBm = "BM25/";
+        String indexStdBm = "BM25-PLAIN";
         // Open the folder that contains our search index
         Directory dbstd;
         try {
@@ -46,7 +47,8 @@ public class QueryResultGenerator {
 
 //			MultiFieldQueryParser qry_std = new MultiFieldQueryParser(new String[] {"filename", "Topic"}, analyzer);
 
-            QueryParser parser_std = new QueryParser("Text", analyzer);
+            //QueryParser parser_std = new QueryParser("Text", analyzer);
+            QueryParser parser_std = new QueryParser("ALL_CONTENT", analyzer);
 
             BufferedReader br = new BufferedReader(new FileReader("../topics.401-450"));
             String line = null;
