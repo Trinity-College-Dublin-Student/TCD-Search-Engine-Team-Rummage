@@ -65,7 +65,7 @@ public class Indexer {
 				}
 				String[] content = sb.toString().split("</DOC>");
 				for (int i = 0; i < content.length; i++) {
-
+					if(content[i].length() <= 2) continue;
 					String topic = "";
 					String DOCNO = "";
 					String text = content[i].trim();
@@ -73,7 +73,7 @@ public class Indexer {
 					DOCNO = StringUtils.substringBetween(content[i], "<DOCNO>", "</DOCNO>").trim(); // DocNo
 					Field pathField = new StringField("path", file.toString(), Field.Store.YES);
 					log.info("Current File -> " + pathField);
-					text = text.replaceAll("\\<.*?\\>", "");
+					//text = text.replaceAll("\\<.*?\\>", "");
 					System.out.println(DOCNO);
 					doc.add(new TextField("DOCNO", DOCNO, Field.Store.YES));
 					doc.add(new TextField("Text", text, Field.Store.YES));

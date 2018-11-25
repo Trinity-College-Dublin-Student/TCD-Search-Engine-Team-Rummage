@@ -37,9 +37,7 @@ public class QueryResultGenerator {
 
             // create objects to read and search across the index
 
-
             DirectoryReader irbstd = DirectoryReader.open(dbstd);
-
 
             IndexSearcher isbstd = new IndexSearcher(irbstd);
             isbstd.setSimilarity(new BM25Similarity(0.8f, 0.75f));
@@ -47,7 +45,6 @@ public class QueryResultGenerator {
             // we can use this to search across any field
 
 //			MultiFieldQueryParser qry_std = new MultiFieldQueryParser(new String[] {"filename", "Topic"}, analyzer);
-
 
             QueryParser parser_std = new QueryParser("Text", analyzer);
 
@@ -63,7 +60,6 @@ public class QueryResultGenerator {
             BufferedWriter writer_bm_std = null;
 
             writer_bm_std = new BufferedWriter(new FileWriter("./Result.txt"));
-
 
             for (int i = 1; i < content.length; i++) {	
                 content[i] = content[i].replace("\"", "");
