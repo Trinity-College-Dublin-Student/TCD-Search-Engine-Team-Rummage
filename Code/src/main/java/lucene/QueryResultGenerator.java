@@ -7,14 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -68,12 +65,18 @@ public class QueryResultGenerator {
             writer_bm_std = new BufferedWriter(new FileWriter("./Result.txt"));
 
 
-            for (int i = 1; i < content.length; i++) {
+            for (int i = 1; i < content.length; i++) {	
                 content[i] = content[i].replace("\"", "");
                 content[i] = content[i].replace("/", "");
                 queryString = StringUtils.substringBetween(content[i], "<title>", "<desc>").trim();
-                queryString = queryString + " " + StringUtils.substringBetween(content[i], "Description:", "<narr>").trim();
-                //queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").trim();
+                String[] qryStr = queryString.trim().split(" ");
+                @SuppressWarnings("deprecation")
+				String scrambledWord = StringUtils.reverseDelimitedString(queryString, " ");
+                System.out.println(scrambledWord);
+                queryString = queryString+ " "+ queryString + " "+qryStr[0] +" "+ StringUtils.substringBetween(content[i], "Description:", "<narr>")+ " " + scrambledWord.trim();
+                queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").toLowerCase().
+                		replace("document", "").replace("documents","").replace("relevant", "").replace("discuss","").replace("provide", "").replace("mention","").
+                		replace("describing","").replace("find","").replace("information",""). replace("relevant","").trim();
                 String qryNo = StringUtils.substringBetween(content[i], "Number:", "<title>").trim();
                 Query query_std = parser_std.parse(queryString);
                 ScoreDoc[] hits_bm_std = isbstd.search(query_std, 1000).scoreDocs;
