@@ -24,7 +24,8 @@ public class PlainIndexer {
     private static String BASE_PATH = "../Assignment Two Dataset/";
 
     public static void main(String[] args) throws IOException{
-        Analyzer analyzer = new EnglishAnalyzer();
+        //Analyzer analyzer = new EnglishAnalyzer();
+        Analyzer analyzer = new CustomAnalyzer();
         Directory directory_std = FSDirectory.open(Paths.get(INDEX_DIRECTORY_STD));
         IndexWriterConfig config_standard = new IndexWriterConfig(analyzer);
 

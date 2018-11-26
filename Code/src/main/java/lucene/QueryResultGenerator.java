@@ -1,6 +1,5 @@
 package lucene;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -26,9 +25,12 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 public class QueryResultGenerator {
-    public static void main(String[] args) {
-        Analyzer analyzer = new EnglishAnalyzer();
 
+    public static void main(String[] args) {
+
+        //Analyzer analyzer = new EnglishAnalyzer();
+        Analyzer analyzer = new CustomAnalyzer();
+        
         //String indexStdBm = "BM25/";
         String indexStdBm = "BM25-PLAIN";
         // Open the folder that contains our search index
@@ -61,22 +63,20 @@ public class QueryResultGenerator {
             String queryString = "";
             String[] content = sb.toString().split("</top>");
 
-            BufferedWriter writer_bm_std = null;
+            BufferedWriter writer_bm_std = new BufferedWriter(new FileWriter("Result.txt"));
 
-            writer_bm_std = new BufferedWriter(new FileWriter("./Result.txt"));
-
-            for (int i = 1; i < content.length; i++) {	
+            for (int i = 1; i < content.length; i++) {
                 content[i] = content[i].replace("\"", "");
                 content[i] = content[i].replace("/", "");
                 queryString = StringUtils.substringBetween(content[i], "<title>", "<desc>").trim();
                 String[] qryStr = queryString.trim().split(" ");
                 @SuppressWarnings("deprecation")
-				String scrambledWord = StringUtils.reverseDelimitedString(queryString, " ");
+                String scrambledWord = StringUtils.reverseDelimitedString(queryString, " ");
                 System.out.println(scrambledWord);
-                queryString = queryString+ " "+ queryString + " "+qryStr[0] +" "+ StringUtils.substringBetween(content[i], "Description:", "<narr>")+ " " + scrambledWord.trim();
+                queryString = queryString + " " + queryString + " " + qryStr[0] + " " + StringUtils.substringBetween(content[i], "Description:", "<narr>") + " " + scrambledWord.trim();
                 queryString = queryString + " " + StringUtils.substringAfter(content[i], "Narrative:").toLowerCase().
-                        replace("document", "").replace("documents","").replace("relevant", "").replace("discuss","").replace("provide", "").replace("mention","").
-                        replace("describing","").replace("find","").replace("information",""). replace("relevant","").trim();
+                        replace("document", "").replace("documents", "").replace("relevant", "").replace("discuss", "").replace("provide", "").replace("mention", "").
+                        replace("describing", "").replace("find", "").replace("information", "").replace("relevant", "").trim();
                 //queryString = QueryResultGenerator.replace(queryString);
                 String qryNo = StringUtils.substringBetween(content[i], "Number:", "<title>").trim();
                 Query query_std = parser_std.parse(queryString);
