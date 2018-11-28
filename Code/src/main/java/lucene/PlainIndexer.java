@@ -24,8 +24,7 @@ public class PlainIndexer {
     private static String BASE_PATH = "../Assignment Two Dataset/";
 
     public static void main(String[] args) throws IOException{
-        //Analyzer analyzer = new EnglishAnalyzer();
-        Analyzer analyzer = new CustomAnalyzer();
+        Analyzer analyzer = new EnglishAnalyzer();
         Directory directory_std = FSDirectory.open(Paths.get(INDEX_DIRECTORY_STD));
         IndexWriterConfig config_standard = new IndexWriterConfig(analyzer);
 
@@ -68,7 +67,8 @@ public class PlainIndexer {
         }
         String[] content = sb.toString().split("</DOC>");
         for (int i = 0; i < content.length - 1; i++) {
-            String originalDoc = content[i];
+            String originalDoc = QueryResultGenerator.replace(content[i]);
+            originalDoc.replaceAll("[,;?]", " ").replaceAll("\\s+", " ");
             if(originalDoc.length() <= 2) continue;
             Document doc = new Document();
             String DOCNO = StringUtils.substringBetween(originalDoc, "<DOCNO>", "</DOCNO>").trim(); // DocNo

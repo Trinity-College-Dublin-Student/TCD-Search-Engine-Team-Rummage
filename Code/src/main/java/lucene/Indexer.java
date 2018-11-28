@@ -34,7 +34,7 @@ public class Indexer {
 
 	public static void main(String[] args) throws IOException {
 		// Analyzer that is used to process TextField
-		DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
+		// DOMConfigurator.configure("/home/abhishek/Desktop/TCD-DATA/lucene-2/log4j.xml");
 		Analyzer analyzer_standard = new EnglishAnalyzer();
 
 		Directory directory_std = FSDirectory.open(Paths.get(INDEX_DIRECTORY_STD));
